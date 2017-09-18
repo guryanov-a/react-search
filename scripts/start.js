@@ -1,16 +1,13 @@
-const { exec } = require('child_process');
+var jsonServer = require('json-server');
+var server = jsonServer.create();
+var router = jsonServer.router('db/db.json');
+var middlewares = jsonServer.defaults();
+var fs = require('fs');
+var port = process.env.PORT || 3000;
 
-// Set port (default: 3000). For Heroku, we need to use
-// the port set by the environment variable $PORT
-const port = process.env.PORT || 3000;
+server.use(middlewares);
+server.use(router);
 
-const command = `json-server --watch ./db/db.json --port ${port}`;
-
-exec(command, (err, stdout, stderr) => {
-  if (err) {
-    console.log('Error running exec', err);
-    return;
-  }
-  console.log('stdout:', stdout);
-  console.log('stderr:', stderr);
+server.listen(port, function () {
+  console.log('\x1b[36mjson-server is running!');
 });
