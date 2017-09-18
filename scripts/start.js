@@ -40,7 +40,7 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
 }
 
 // Tools like Cloud9 rely on this.
-const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3004;
+const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 
 // We attempt to use the default port but if it is busy, we offer the user to
@@ -90,3 +90,14 @@ choosePort(HOST, DEFAULT_PORT)
     }
     process.exit(1);
   });
+
+const command = `json-server --watch db.json --port ${DEFAULT_PORT}`;
+
+exec(command, (err, stdout, stderr) => {
+  if (err) {
+    console.log('Error running exec', err);
+    return;
+  }
+  console.log('stdout:', stdout);
+  console.log('stderr:', stderr);
+});
