@@ -1,0 +1,36 @@
+{
+  "id": "Users",
+  "type": "array",
+  "items": {
+    "id": "User",
+    "type": "object",
+    "properties": {
+      "id": {
+        "faker": "random.uuid"
+      },
+      "username": {
+        "faker": "name.findName"
+      },
+      "email": {
+        "faker": "internet.email"
+      },
+      "avatar": {
+        "faker": "image.avatar"
+      },
+      "country": {
+        "faker": "address.country"
+      },
+      "city": {
+        "faker": "address.city"
+      },
+      "registration-date": {
+        "faker": "date.past"
+      },
+      "postsQuantity": {
+        "faker": "random.number"
+      }
+    },
+    "required": ["id", "username", "email", "registration-date", "postsQuantity"]
+  },
+  "minItems": 1000
+}

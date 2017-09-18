@@ -1,0 +1,1 @@
+export { searchApp } from './searchApp';

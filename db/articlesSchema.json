@@ -1,0 +1,65 @@
+{
+  "id": "articles",
+  "type": "array",
+  "items": {
+    "id": "article",
+    "type": "object",
+    "properties": {
+      "id": {
+        "faker": "random.uuid"
+      },
+      "url": {
+        "faker": "internet.url"
+      },
+      "title": {
+        "faker": "lorem.sentence"
+      },
+      "description": {
+        "faker": "lorem.paragraph"
+      },
+      "image": {
+        "faker": "image.image"
+      },
+      "author": {
+        "faker": "name.findName"
+      },
+      "postDate": {
+        "faker": "date.past"
+      },
+      "commentsCount": {
+        "faker": "random.number"
+      },
+      "viewsCount": {
+        "faker": "random.number"
+      },
+      "articleType": {
+        "chance": {
+          "pickone": [
+            [
+              "serious",
+              "light"
+            ]
+          ]
+        }
+      },
+      "articleTags": {
+        "chance": {
+          "pickset": [
+            [
+              "politics",
+              "economics",
+              "social",
+              "agrarian",
+              "culture",
+              "rural",
+              "urban"
+            ],
+            3
+          ]
+        }
+      }
+    },
+    "required": ["id","url", "title", "description","image", "author", "postDate", "commentsCount", "viewsCount", "articleType", "articleTags"]
+  },
+  "minItems": 1000
+}
