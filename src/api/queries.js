@@ -58,7 +58,7 @@ export const searchQuery = () => {
 
   let resultQuery = `?${resultQueryArray.join('&')}`;
 
-  fetch(`//localhost:3004/articles${resultQuery}`).then( (response) => {
+  fetch(`:3004/articles${resultQuery}`).then( (response) => {
     const {
       totalSearchResults,
     } = store.getState();
@@ -83,7 +83,7 @@ export const searchQuery = () => {
 };
 
 export const filtersQuery = () => {
-  fetch(`//localhost:3004/articleTypes`)
+  fetch(`:3004/articleTypes`)
     .then(response => response.json())
     .then(articleTypes => {
       store.dispatch({
