@@ -6,7 +6,8 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "json-server": "json-server --watch ./db/db.json --port 3004"
+    "json-server": "json-server --watch ./db/db.json --port 3004",
+    "heroku-postbuild": "npm run json-server"
   },
   "dependencies": {
     "autoprefixer": "^7.1.2",
