@@ -58,7 +58,7 @@ export const searchQuery = () => {
 
   let resultQuery = `?${resultQueryArray.join('&')}`;
 
-  fetch(`http://localhost:3004/articles${resultQuery}`).then( (response) => {
+  fetch(`https://powerful-cove-85646.herokuapp.com//articles${resultQuery}`).then( (response) => {
     const {
       totalSearchResults,
     } = store.getState();
@@ -83,7 +83,7 @@ export const searchQuery = () => {
 };
 
 export const filtersQuery = () => {
-  fetch(`http://localhost:3004/articleTypes`)
+  fetch(`https://powerful-cove-85646.herokuapp.com//articleTypes`)
     .then(response => response.json())
     .then(articleTypes => {
       store.dispatch({
