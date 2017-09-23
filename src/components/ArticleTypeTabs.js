@@ -33,7 +33,7 @@ class ArticleTypeTabs extends Component {
   render() {
     const { articleTypes } = store.getState();
 
-    return <Tabs tabs={articleTypes} onClick={this.handleClick} />;
+    return <Tabs tabs={articleTypes} onTabClick={this.handleClick} />;
   }
 }
 

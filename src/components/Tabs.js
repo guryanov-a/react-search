@@ -3,7 +3,7 @@ import Tab from './Tab';
 
 const Tabs = ({
   tabs,
-  onClick,
+  onTabClick,
 }) => (
   <ul className="filter-tabs nav nav-tabs">
     {
@@ -11,7 +11,7 @@ const Tabs = ({
         <Tab
           key={i}
           {...tab}
-          onClick={onClick}
+          onClick={onTabClick}
         />
       ))
     }
