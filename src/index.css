@@ -10,6 +10,10 @@ img {
   padding-top: 10vh;
 }
 
+.search-header__title {
+  text-align: center;
+}
+
 .search-results .filter-select,
 .search-results__header {
   margin-bottom: 1rem;

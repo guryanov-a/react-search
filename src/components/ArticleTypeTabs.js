@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import store from '../store';
 import { searchQuery } from '../api';
+import Tab from './Tab';
 
 class ArticleTypeTabs extends Component {
   handleClick = (e) => {
@@ -35,19 +36,14 @@ class ArticleTypeTabs extends Component {
     return (
       <ul className="filter-tabs nav nav-tabs">
         {
-          articleTypes.map((articleType, i) => {
-            return <li
+          articleTypes.map((articleType, i) => (
+            <Tab
               key={i}
-              role="presentation"
-              className={`filter-tab nav-item`}
-            >
-              <a
-                data-article-type={articleType.name}
-                onClick={this.handleClick}
-                className={`filter-tab__button nav-link ${articleType.isActive ? 'active' : ''}`}
-              >{articleType.name}</a>
-            </li>
-          })
+              name={articleType.name}
+              isActive={articleType.isActive}
+              onClick={this.handleClick}
+            />
+          ))
         }
       </ul>
     );
