@@ -7,7 +7,7 @@
     "server": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "json-server": "json-server --watch ./db/db.json --port 3004"
+    "json-server": "node scripts/json-server.js"
   },
   "dependencies": {
     "autoprefixer": "^7.1.2",
