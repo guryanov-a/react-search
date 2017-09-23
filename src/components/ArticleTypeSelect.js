@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import store from '../store';
 import { searchQuery } from '../api';
+import Select from './Select';
 
 class ArticleTypeSelect extends Component {
   handleChange = (e) => {
@@ -32,22 +33,11 @@ class ArticleTypeSelect extends Component {
   render() {
     const { articleTypes } = store.getState();
 
-    return (
-      <select
-        value={articleTypes.filter(articleType => articleType.isActive)[0].name}
-        className="filter-select form-control"
-        onChange={this.handleChange}
-      >
-        {
-          articleTypes.map((articleType, i) => {
-            return <option
-              key={i}
-              value={articleType.name}
-            >{articleType.name}</option>
-          })
-        }
-      </select>
-    );
+    return <Select
+      activeValue={articleTypes.filter(articleType => articleType.isActive)[0].name}
+      onChange={this.handleChange}
+      options={articleTypes}
+    />;
   }
 }
 
