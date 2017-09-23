@@ -65,7 +65,7 @@ class SearchResults extends Component {
       <div className="search-results">
         {
           areTabs && (
-            <div>
+            <div className="search-results__article-type-filters">
               <ArticleTypeTabs />
               <ArticleTypeSelect />
             </div>
