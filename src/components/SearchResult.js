@@ -35,7 +35,7 @@ const SearchResult = ({
     <div className="search-result">
       <div className="row">
         <div className="col-3">
-          <img className="search-result__image" src="http://via.placeholder.com/270x200" alt="meaningful description" />
+          <img className="search-result__image" src="https://via.placeholder.com/270x200" alt="meaningful description" />
         </div>
         <div className="col">
           <div className="search-result__main-info">
