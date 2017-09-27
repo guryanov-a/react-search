@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "npm-run-all --parallel server json-server",
+    "start-dev": "npm-run-all --parallel server-dev json-server",
     "server": "node scripts/start.js",
+    "server-dev": "node scripts/start-dev.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "json-server": "node scripts/json-server.js"
