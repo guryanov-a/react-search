@@ -37,6 +37,7 @@ class ArticleTypeSelect extends Component {
       activeValue={articleTypes.filter(articleType => articleType.isActive)[0].name}
       onChange={this.handleChange}
       options={articleTypes}
+      className="filter-select"
     />;
   }
 }

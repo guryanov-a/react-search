@@ -3,7 +3,7 @@ import store from '../store';
 import SearchResultsPagination from 'react-paginate';
 import SearchResult from './SearchResult';
 
-const SearchResultList = ({ handlePageClick }) => {
+const SearchResultList = ({ onPageClick }) => {
   const {
     searchResults,
     totalSearchResults,
@@ -40,7 +40,7 @@ const SearchResultList = ({ handlePageClick }) => {
               pageCount={pageCount}
               marginPagesDisplayed={pagination.marginPagesDisplayed}
               pageRangeDisplayed={pagination.pageRangeDisplayed}
-              onPageChange={handlePageClick}
+              onPageChange={onPageClick}
               initialPage={currentPage}
               forcePage={currentPage}
               containerClassName={"pagination search-results-pagination"}

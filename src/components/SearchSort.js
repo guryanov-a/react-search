@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import store from '../store';
 import { searchQuery } from "../api/queries";
+import Select from './Select';
 
 class SearchSort extends Component {
   handleSelectChange = (event) => {
@@ -19,18 +20,13 @@ class SearchSort extends Component {
       <div className="search-sort">
         <label className="search-sort__label">
           Sort by
-          <select
+          <Select
             id="search-sort"
-            className="search-sort__select form-control"
-            value={store.getState().sortTypes.filter(sortType => sortType.isActive)[0].name}
+            className="search-sort__select"
+            activeValue={sortTypes.filter(sortType => sortType.isActive)[0].name}
             onChange={this.handleSelectChange}
-          >
-            {
-              sortTypes.map((sortType, i) => {
-                return <option key={i} value={sortType.name}>{sortType.name}</option>
-              })
-            }
-          </select>
+            options={sortTypes}
+          />
         </label>
       </div>
     );

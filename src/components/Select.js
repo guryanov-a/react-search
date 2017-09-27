@@ -5,10 +5,11 @@ const Select = ({
   activeValue,
   onChange,
   options,
+  className
 }) => (
   <select
     value={activeValue}
-    className="filter-select form-control"
+    className={`form-control ${className}`}
     onChange={onChange}
   >
     {

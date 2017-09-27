@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import store from '../store';
-import FilterItem from './FilterItem';
+import FilterList from './FilterList';
 import { searchQuery, filtersQuery } from '../api';
 
 class TagFilters extends Component {
@@ -14,7 +14,7 @@ class TagFilters extends Component {
     }
   };
 
-  onFilterItemClick = (e) => {
+  onFilterItemChange = (e) => {
     const filter = e.target.value;
     const { searchResultsLimit } = store.getState();
 
@@ -59,17 +59,10 @@ class TagFilters extends Component {
             <h4 className="filter-group__title">{ searchedText }</h4>
             <button className="filter-group__toggle" onClick={this.handleToggleFilterGroup}>Toggle filter group</button>
           </div>
-          <ul className="filter-group__list filter-list">
-            {
-              tagFilters.map((tagFilter, i) =>
-                <FilterItem
-                  key={i}
-                  {...tagFilter}
-                  handleChange={this.onFilterItemClick}
-                />
-              )
-            }
-          </ul>
+          <FilterList
+            filters={tagFilters}
+            onFilterItemChange={onFilterItemChange}
+          />
         </div>
       </div>
     );
