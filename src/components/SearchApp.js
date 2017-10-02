@@ -50,33 +50,6 @@ class SearchApp extends Component {
     });
   };
 
-  handlePageClick = (data) => {
-    const {
-      searchResultsLimit,
-    } = store.getState();
-
-    let selectedPage = data.selected;
-    let offset = Math.ceil(selectedPage * searchResultsLimit);
-    let offsetEnd = Math.ceil(selectedPage * searchResultsLimit + searchResultsLimit);
-
-    store.dispatch({
-      type: 'CHANGE_SEARCH_OFFSET',
-      searchOffset: offset,
-    });
-
-    store.dispatch({
-      type: 'CHANGE_SEARCH_OFFSET_END',
-      searchOffsetEnd: offsetEnd,
-    });
-
-    store.dispatch({
-      type: 'CHANGE_CURRENT_PAGE',
-      selectedPage,
-    });
-
-    searchQuery();
-  };
-
   componentDidMount() {
     if (window.innerWidth < 768) {
       store.dispatch({
@@ -104,7 +77,7 @@ class SearchApp extends Component {
       <div className="search-app">
         <div className="container-fluid">
           <SearchForm onSearch={this.handleSearch} onSearchTextChange={this.handleSearchTextChange} />
-          <SearchResults onPageClick={this.handlePageClick} />
+          <SearchResults />
         </div>
       </div>
     );

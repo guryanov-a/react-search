@@ -1,31 +1,24 @@
-import React from 'react';
-import store from '../store';
-import ArticleTypeTabs from "./ArticleTypeTabs";
-import ArticleTypeSelect from "./ArticleTypeSelect";
+import React, { Component } from 'react';
 import SearchResultList from './SearchResultList';
 import SearchInfo from './SearchInfo';
 import SearchSort from "./SearchSort";
+import SearchResultsPagination from './SearchResultsPagination';
+import ArticleTypeFilters from './ArticleTypeFilters';
 
-const SearchResults = ({ onPageClick }) => {
-  const { areTabs } = store.getState();
-
-  return (
-    <div className="search-results">
-      {
-        areTabs && (
-          <div className="search-results__article-type-filters">
-            <ArticleTypeTabs />
-            <ArticleTypeSelect />
-          </div>
-        )
-      }
-      <div className="search-results__header">
-        <SearchInfo />
-        <SearchSort />
+class SearchResults extends Component {
+  render() {
+    return (
+      <div className="search-results">
+        <ArticleTypeFilters />
+        <div className="search-results__header">
+          <SearchInfo />
+          <SearchSort />
+        </div>
+        <SearchResultList />
+        <SearchResultsPagination />
       </div>
-      <SearchResultList onPageClick={onPageClick} />
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default SearchResults;

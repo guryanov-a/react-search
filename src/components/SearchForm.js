@@ -14,12 +14,10 @@ const SearchForm = ({
             type="text"
             onChange={onSearchTextChange}
             placeholder="Search..."
-            ref={node => this.input = node}
           />
         </div>
         <button className="btn btn-primary search-form__submit" type="submit">Search</button>
       </div>
-
     </form>
   </div>
 );
