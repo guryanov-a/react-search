@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import SearchForm from './SearchForm';
-import store from '../store';
 import { searchQuery } from '../api';
 import { filtersQuery } from "../api/queries";
 
 class ArticlesSearchForm extends Component {
   handleSearchTextChange = (e) => {
+    const { store } = this.context;
+
     store.dispatch({
       type: 'CHANGE_SEARCH_TEXT',
       searchText: e.target.value,
@@ -13,6 +15,8 @@ class ArticlesSearchForm extends Component {
   };
 
   handleSearch = (e) => {
+    const { store } = this.context;
+
     e.preventDefault();
 
     const {
@@ -50,6 +54,8 @@ class ArticlesSearchForm extends Component {
   };
 
   componentDidMount() {
+    const { store } = this.context;
+
     store.subscribe(() => {
       this.forceUpdate();
     });
@@ -83,5 +89,9 @@ class ArticlesSearchForm extends Component {
     return <SearchForm onSearch={this.handleSearch} onSearchTextChange={this.handleSearchTextChange} />;
   }
 }
+
+ArticlesSearchForm.contextTypes = {
+  store: PropTypes.object,
+};
 
 export default ArticlesSearchForm;

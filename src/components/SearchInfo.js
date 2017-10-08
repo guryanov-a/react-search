@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import store from '../store';
+import PropTypes from 'prop-types';
 
 class SearchInfo extends Component {
   componentDidMount() {
+    const { store } = this.context;
+
     store.subscribe(() => {
       this.forceUpdate();
     });
@@ -13,6 +15,7 @@ class SearchInfo extends Component {
   }
 
   render() {
+    const { store } = this.context;
     const {
       totalSearchResults,
       searchedText,
@@ -27,5 +30,9 @@ class SearchInfo extends Component {
     );
   }
 }
+
+SearchInfo.contextTypes = {
+  store: PropTypes.object,
+};
 
 export default SearchInfo;

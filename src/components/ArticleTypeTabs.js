@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import store from '../store';
+import PropTypes from 'prop-types';
 import { searchQuery } from '../api';
 import Tabs from './Tabs';
 
 class ArticleTypeTabs extends Component {
   componentDidMount() {
+    const { store } = this.context;
+
     store.subscribe(() => {
       this.forceUpdate();
     });
@@ -15,6 +17,7 @@ class ArticleTypeTabs extends Component {
   }
 
   handleClick = (e) => {
+    const { store } = this.context;
     const { searchResultsLimit } = store.getState();
 
     store.dispatch({
@@ -41,10 +44,15 @@ class ArticleTypeTabs extends Component {
   };
 
   render() {
+    const { store } = this.context;
     const { articleTypes } = store.getState();
 
     return <Tabs tabs={articleTypes} onTabClick={this.handleClick} />;
   }
 }
+
+ArticleTypeTabs.contextTypes = {
+  store: PropTypes.object,
+};
 
 export default ArticleTypeTabs;

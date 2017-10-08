@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import store from '../store';
+import PropTypes from 'prop-types';
 import Pagination from 'react-paginate';
 import { searchQuery } from '../api';
 
 class SearchResultsPagination extends Component {
   componentDidMount() {
+    const { store } = this.context;
+
     store.subscribe(() => {
       this.forceUpdate();
     });
@@ -15,6 +17,7 @@ class SearchResultsPagination extends Component {
   }
 
   handlePageClick = (data) => {
+    const { store } = this.context;
     const {
       searchResultsLimit,
     } = store.getState();
@@ -42,6 +45,7 @@ class SearchResultsPagination extends Component {
   };
 
   render() {
+    const { store } = this.context;
     const {
       totalSearchResults,
       pagination,
@@ -82,5 +86,9 @@ class SearchResultsPagination extends Component {
     }
   }
 }
+
+SearchResultsPagination.contextTypes = {
+  store: PropTypes.object,
+};
 
 export default SearchResultsPagination;

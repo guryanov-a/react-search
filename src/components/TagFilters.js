@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import store from '../store';
+import PropTypes from 'prop-types';
 import FilterList from './FilterList';
 import { searchQuery, filtersQuery } from '../api';
 
@@ -15,8 +15,9 @@ class TagFilters extends Component {
   };
 
   onFilterItemChange = (e) => {
-    const filter = e.target.value;
+    const { store } = this.context;
     const { searchResultsLimit } = store.getState();
+    const filter = e.target.value;
 
     store.dispatch({
       type: 'CHANGE_SEARCH_OFFSET',
@@ -42,6 +43,8 @@ class TagFilters extends Component {
   };
 
   componentDidMount() {
+    const { store } = this.context;
+
     store.subscribe(() => {
       this.forceUpdate();
     });
@@ -54,6 +57,7 @@ class TagFilters extends Component {
   }
 
   render() {
+    const { store } = this.context;
     const {
       tagFilters,
       searchedText,
@@ -76,5 +80,9 @@ class TagFilters extends Component {
     );
   }
 }
+
+TagFilters.contextTypes = {
+  store: PropTypes.object,
+};
 
 export default TagFilters;

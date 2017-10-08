@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import store from '../store';
+import PropTypes from 'prop-types';
 import { searchQuery } from "../api/queries";
 import Select from './Select';
 
 class SearchSort extends Component {
   componentDidMount() {
+    const { store } = this.context;
+
     store.subscribe(() => {
       this.forceUpdate();
     });
@@ -15,6 +17,7 @@ class SearchSort extends Component {
   }
 
   handleSelectChange = (event) => {
+    const { store } = this.context;
     const { searchResultsLimit } = store.getState();
 
     store.dispatch({
@@ -41,6 +44,7 @@ class SearchSort extends Component {
   };
 
   render() {
+    const { store } = this.context;
     const { sortTypes } = store.getState();
 
     return (
@@ -59,5 +63,9 @@ class SearchSort extends Component {
     );
   }
 }
+
+SearchSort.contextTypes = {
+  store: PropTypes.object,
+};
 
 export default SearchSort;

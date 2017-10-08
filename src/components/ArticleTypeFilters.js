@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import store from '../store';
+import PropTypes from 'prop-types';
 import ArticleTypeTabs from './ArticleTypeTabs';
 import ArticleTypeSelect from './ArticleTypeSelect';
 
 class ArticleTypeFilters extends Component {
   componentDidMount() {
+    const { store } = this.context;
+
     store.subscribe(() => {
       this.forceUpdate();
     });
@@ -15,9 +17,8 @@ class ArticleTypeFilters extends Component {
   }
 
   render() {
-    const {
-      areTabs,
-    } = store.getState();
+    const { store } = this.context;
+    const { areTabs } = store.getState();
 
     if(areTabs) {
       return (
@@ -31,5 +32,9 @@ class ArticleTypeFilters extends Component {
     }
   }
 }
+
+ArticleTypeFilters.contextTypes = {
+  store: PropTypes.object,
+};
 
 export default ArticleTypeFilters;

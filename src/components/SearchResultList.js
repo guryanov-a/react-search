@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import store from '../store';
+import PropTypes from 'prop-types';
 import PreviewsList from './PreviewsList';
 
 class SearchResultList extends Component {
   componentDidMount() {
+    const { store } = this.context;
+
     store.subscribe(() => {
       this.forceUpdate();
     });
@@ -14,6 +16,7 @@ class SearchResultList extends Component {
   }
 
   render() {
+    const { store } = this.context;
     const {
       searchResults,
       totalSearchResults,
@@ -24,6 +27,10 @@ class SearchResultList extends Component {
       totalPreviews={totalSearchResults}
     />;
   }
+}
+
+SearchResultList.contextTypes = {
+  store: PropTypes.object,
 };
 
 export default SearchResultList;

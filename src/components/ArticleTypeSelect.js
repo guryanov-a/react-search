@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import store from '../store';
+import PropTypes from 'prop-types';
 import { searchQuery } from '../api';
 import Select from './Select';
 
 class ArticleTypeSelect extends Component {
   componentDidMount() {
+    const { store } = this.context;
+
     store.subscribe(() => {
       this.forceUpdate();
     });
@@ -15,6 +17,7 @@ class ArticleTypeSelect extends Component {
   }
 
   handleChange = (e) => {
+    const { store } = this.context;
     const { searchResultsLimit } = store.getState();
 
     store.dispatch({
@@ -41,6 +44,7 @@ class ArticleTypeSelect extends Component {
   };
 
   render() {
+    const { store } = this.context;
     const { articleTypes } = store.getState();
 
     return <Select
@@ -51,5 +55,9 @@ class ArticleTypeSelect extends Component {
     />;
   }
 }
+
+ArticleTypeSelect.contextTypes = {
+  store: PropTypes.object,
+};
 
 export default ArticleTypeSelect;
