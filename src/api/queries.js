@@ -1,4 +1,10 @@
 import store from '../store';
+import {
+  changeSearchResultsCount,
+  changePageCount,
+  changeSearchResults,
+  setArticleTypes,
+} from '../actions';
 
 export const searchQuery = () => {
   const {
@@ -63,22 +69,12 @@ export const searchQuery = () => {
       totalSearchResults,
     } = store.getState();
 
-    store.dispatch({
-      type: 'CHANGE_SEARCH_RESULTS_COUNT',
-      totalSearchResults: response.headers.get('X-Total-Count'),
-    });
-
-    store.dispatch({
-      type: 'CHANGE_PAGE_COUNT',
-      pageCount: Math.ceil(totalSearchResults / searchResultsLimit),
-    });
+    store.dispatch(changeSearchResultsCount(response.headers.get('X-Total-Count')));
+    store.dispatch(changePageCount(Math.ceil(totalSearchResults / searchResultsLimit)));
 
     return response.json();
   }).then( (articles) => {
-    store.dispatch({
-      type: 'CHANGE_SEARCH_RESULTS',
-      searchResults: articles,
-    });
+    store.dispatch(changeSearchResults(articles));
   })
 };
 
@@ -86,10 +82,7 @@ export const filtersQuery = () => {
   fetch(`/articleTypes`)
     .then(response => response.json())
     .then(articleTypes => {
-      store.dispatch({
-        type: 'SET_ARTICLE_TYPES',
-        articleTypes,
-      })
+      store.dispatch(setArticleTypes(articleTypes));
     })
     .catch(e => new Error(e));
 };

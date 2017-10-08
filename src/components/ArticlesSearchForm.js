@@ -3,15 +3,21 @@ import PropTypes from 'prop-types';
 import SearchForm from './SearchForm';
 import { searchQuery } from '../api';
 import { filtersQuery } from "../api/queries";
+import {
+  changeSearchOffset,
+  changeSearchOffsetEnd,
+  changeCurrentPage,
+  changeSearchedText,
+  changeSearchText,
+  changeSearchLimit,
+  changePaginationMargin,
+} from "../actions";
 
 class ArticlesSearchForm extends Component {
   handleSearchTextChange = (e) => {
     const { store } = this.context;
 
-    store.dispatch({
-      type: 'CHANGE_SEARCH_TEXT',
-      searchText: e.target.value,
-    });
+    store.dispatch(changeSearchText(e.target.value));
   };
 
   handleSearch = (e) => {
@@ -24,57 +30,29 @@ class ArticlesSearchForm extends Component {
       searchText,
     } = store.getState();
 
-    store.dispatch({
-      type: 'CHANGE_SEARCH_OFFSET',
-      searchOffset: 0,
-    });
-
-    store.dispatch({
-      type: 'CHANGE_SEARCH_OFFSET_END',
-      searchOffsetEnd: searchResultsLimit,
-    });
-
-    store.dispatch({
-      type: 'CHANGE_CURRENT_PAGE',
-      selectedPage: 0,
-    });
-
-    store.dispatch({
-      type: 'CHANGE_SEARCHED_TEXT',
-      searchedText: searchText,
-    });
+    store.dispatch(changeSearchOffset(0));
+    store.dispatch(changeSearchOffsetEnd(searchResultsLimit));
+    store.dispatch(changeCurrentPage(0));
+    store.dispatch(changeSearchedText(searchText));
 
     searchQuery();
 
     e.target.reset();
-    store.dispatch({
-      type: 'CHANGE_SEARCH_TEXT',
-      searchText: '',
-    });
+    store.dispatch(changeSearchText(''));
   };
 
   componentDidMount() {
     const { store } = this.context;
+    const { searchResultsLimit } = store.getState();
 
     store.subscribe(() => {
       this.forceUpdate();
     });
 
     if (window.innerWidth < 768) {
-      store.dispatch({
-        type: 'CHANGE_SEARCH_LIMIT',
-        searchResultsLimit: 6,
-      });
-
-      store.dispatch({
-        type: 'CHANGE_SEARCH_OFFSET_END',
-        searchOffsetEnd: store.getState().searchResultsLimit,
-      });
-
-      store.dispatch({
-        type: 'CHANGE_PAGINATION_MARGIN',
-        marginPagesDisplayed: 0,
-      });
+      store.dispatch(changeSearchLimit(6));
+      store.dispatch(changeSearchOffsetEnd(searchResultsLimit));
+      store.dispatch(changePaginationMargin(0));
     }
 
     filtersQuery();

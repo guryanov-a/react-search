@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import FilterList from './FilterList';
 import { searchQuery, filtersQuery } from '../api';
+import {
+  changeSearchOffset,
+  changeSearchOffsetEnd,
+  changeCurrentPage,
+  toggleArticleTagFilter,
+} from '../actions';
 
 class TagFilters extends Component {
   handleToggleFilterGroup = (e) => {
@@ -19,25 +25,10 @@ class TagFilters extends Component {
     const { searchResultsLimit } = store.getState();
     const filter = e.target.value;
 
-    store.dispatch({
-      type: 'CHANGE_SEARCH_OFFSET',
-      searchOffset: 0,
-    });
-
-    store.dispatch({
-      type: 'CHANGE_SEARCH_OFFSET_END',
-      searchOffsetEnd: searchResultsLimit,
-    });
-
-    store.dispatch({
-      type: 'CHANGE_CURRENT_PAGE',
-      selectedPage: 0,
-    });
-
-    store.dispatch({
-      type: 'TOGGLE_ARTICLE_TAG_FILTER',
-      tagFilter: filter,
-    });
+    store.dispatch(changeSearchOffset(0));
+    store.dispatch(changeSearchOffsetEnd(searchResultsLimit));
+    store.dispatch(changeCurrentPage(0));
+    store.dispatch(toggleArticleTagFilter(filter));
 
     searchQuery();
   };

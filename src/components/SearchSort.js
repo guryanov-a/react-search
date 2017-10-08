@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { searchQuery } from "../api/queries";
 import Select from './Select';
+import {
+  changeSearchOffset,
+  changeSearchOffsetEnd,
+  changeCurrentPage,
+  changeSortType,
+} from '../actions';
 
 class SearchSort extends Component {
   componentDidMount() {
@@ -20,25 +26,10 @@ class SearchSort extends Component {
     const { store } = this.context;
     const { searchResultsLimit } = store.getState();
 
-    store.dispatch({
-      type: 'CHANGE_SEARCH_OFFSET',
-      searchOffset: 0,
-    });
-
-    store.dispatch({
-      type: 'CHANGE_SEARCH_OFFSET_END',
-      searchOffsetEnd: searchResultsLimit,
-    });
-
-    store.dispatch({
-      type: 'CHANGE_CURRENT_PAGE',
-      selectedPage: 0,
-    });
-
-    store.dispatch({
-      type: 'CHANGE_SORT_TYPE',
-      newActiveSortType: event.target.value,
-    });
+    store.dispatch(changeSearchOffset(0));
+    store.dispatch(changeSearchOffsetEnd(searchResultsLimit));
+    store.dispatch(changeCurrentPage(0));
+    store.dispatch(changeSortType(event.target.value));
 
     searchQuery();
   };

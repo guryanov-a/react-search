@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Pagination from 'react-paginate';
 import { searchQuery } from '../api';
+import {
+  changeSearchOffset,
+  changeSearchOffsetEnd,
+  changeCurrentPage,
+} from '../actions';
 
 class SearchResultsPagination extends Component {
   componentDidMount() {
@@ -18,28 +23,15 @@ class SearchResultsPagination extends Component {
 
   handlePageClick = (data) => {
     const { store } = this.context;
-    const {
-      searchResultsLimit,
-    } = store.getState();
+    const { searchResultsLimit } = store.getState();
 
     let selectedPage = data.selected;
     let offset = Math.ceil(selectedPage * searchResultsLimit);
     let offsetEnd = Math.ceil(selectedPage * searchResultsLimit + searchResultsLimit);
 
-    store.dispatch({
-      type: 'CHANGE_SEARCH_OFFSET',
-      searchOffset: offset,
-    });
-
-    store.dispatch({
-      type: 'CHANGE_SEARCH_OFFSET_END',
-      searchOffsetEnd: offsetEnd,
-    });
-
-    store.dispatch({
-      type: 'CHANGE_CURRENT_PAGE',
-      selectedPage,
-    });
+    store.dispatch(changeSearchOffset(offset));
+    store.dispatch(changeSearchOffsetEnd(offsetEnd));
+    store.dispatch(changeCurrentPage(selectedPage));
 
     searchQuery();
   };
