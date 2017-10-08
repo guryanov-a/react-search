@@ -4,6 +4,16 @@ import { searchQuery } from "../api/queries";
 import Select from './Select';
 
 class SearchSort extends Component {
+  componentDidMount() {
+    store.subscribe(() => {
+      this.forceUpdate();
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
   handleSelectChange = (event) => {
     const { searchResultsLimit } = store.getState();
 

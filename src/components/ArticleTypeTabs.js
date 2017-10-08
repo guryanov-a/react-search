@@ -4,6 +4,16 @@ import { searchQuery } from '../api';
 import Tabs from './Tabs';
 
 class ArticleTypeTabs extends Component {
+  componentDidMount() {
+    store.subscribe(() => {
+      this.forceUpdate();
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
   handleClick = (e) => {
     const { searchResultsLimit } = store.getState();
 

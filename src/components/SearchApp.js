@@ -51,6 +51,10 @@ class SearchApp extends Component {
   };
 
   componentDidMount() {
+    store.subscribe(() => {
+      this.forceUpdate();
+    });
+
     if (window.innerWidth < 768) {
       store.dispatch({
         type: 'CHANGE_SEARCH_LIMIT',
@@ -70,6 +74,10 @@ class SearchApp extends Component {
 
     filtersQuery();
     searchQuery();
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   render() {

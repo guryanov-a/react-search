@@ -4,6 +4,16 @@ import Pagination from 'react-paginate';
 import { searchQuery } from '../api';
 
 class SearchResultsPagination extends Component {
+  componentDidMount() {
+    store.subscribe(() => {
+      this.forceUpdate();
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
   handlePageClick = (data) => {
     const {
       searchResultsLimit,

@@ -4,6 +4,16 @@ import { searchQuery } from '../api';
 import Select from './Select';
 
 class ArticleTypeSelect extends Component {
+  componentDidMount() {
+    store.subscribe(() => {
+      this.forceUpdate();
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
+
   handleChange = (e) => {
     const { searchResultsLimit } = store.getState();
 

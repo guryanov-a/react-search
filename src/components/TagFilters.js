@@ -43,6 +43,14 @@ class TagFilters extends Component {
 
   componentDidMount() {
     filtersQuery();
+
+    store.subscribe(() => {
+      this.forceUpdate();
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
   }
 
   render() {
