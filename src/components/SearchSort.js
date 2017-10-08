@@ -5,6 +5,23 @@ import Select from './Select';
 
 class SearchSort extends Component {
   handleSelectChange = (event) => {
+    const { searchResultsLimit } = store.getState();
+
+    store.dispatch({
+      type: 'CHANGE_SEARCH_OFFSET',
+      searchOffset: 0,
+    });
+
+    store.dispatch({
+      type: 'CHANGE_SEARCH_OFFSET_END',
+      searchOffsetEnd: searchResultsLimit,
+    });
+
+    store.dispatch({
+      type: 'CHANGE_CURRENT_PAGE',
+      selectedPage: 0,
+    });
+
     store.dispatch({
       type: 'CHANGE_SORT_TYPE',
       newActiveSortType: event.target.value,
