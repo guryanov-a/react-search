@@ -1,4 +1,4 @@
-const handleArticleTypes = (articleTypes) => {
+const setArticleTypes = (articleTypes) => {
   return articleTypes.map(articleType => {
     return {
       name: articleType,
@@ -10,7 +10,7 @@ const handleArticleTypes = (articleTypes) => {
 const articleTypes = (
   state = [
     {
-      name: 'All',
+      name: 'all',
       isActive: true,
     },
   ],
@@ -18,11 +18,11 @@ const articleTypes = (
 ) => {
   switch(action.type) {
     case 'SET_ARTICLE_TYPES':
-      const articleTypesObjects = handleArticleTypes(action.articleTypes);
+      const articleTypesObjects = setArticleTypes(action.articleTypes);
 
       return [
         {
-          name: 'All',
+          name: 'all',
           isActive: true,
         },
         ...articleTypesObjects,

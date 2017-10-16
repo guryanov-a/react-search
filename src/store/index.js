@@ -1,8 +1,10 @@
 import { createStore } from 'redux';
+import { loadState, saveState } from '../utility';
 import { searchApp } from '../reducers';
+import { throttle } from 'lodash';
 
-const store = createStore(
-  searchApp,
+const persistedState = Object.assign(
+  {},
   {
     areTabs: true,
     areFilters: true,
@@ -21,7 +23,17 @@ const store = createStore(
       },
     ],
   },
+  loadState(),
+);
+
+const store = createStore(
+  searchApp,
+  persistedState,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );
+
+store.subscribe(throttle(() => {
+  saveState(store.getState());
+}, 1000));
 
 export default store;

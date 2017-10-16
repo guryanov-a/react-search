@@ -29,7 +29,7 @@ export const searchQuery = () => {
 
   // Filtering by article type
   const activeArticleType = articleTypes.filter(articleType => articleType.isActive)[0].name;
-  if(activeArticleType !== 'All') {
+  if(activeArticleType !== 'all') {
     resultQueryArray.push(`articleType=${activeArticleType}`);
   }
 
@@ -81,8 +81,8 @@ export const searchQuery = () => {
 export const filtersQuery = () => {
   fetch(`/articleTypes`)
     .then(response => response.json())
-    .then(articleTypes => {
-      store.dispatch(setArticleTypes(articleTypes));
+    .then(newArticleTypes => {
+      store.dispatch(setArticleTypes(newArticleTypes));
     })
     .catch(e => new Error(e));
 };
