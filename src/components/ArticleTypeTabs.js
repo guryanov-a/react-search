@@ -31,7 +31,7 @@ class ArticleTypeTabs extends Component {
     store.dispatch(changeCurrentPage(0));
     store.dispatch(chooseArticleType(e.target.dataset.articleType));
 
-    searchQuery();
+    searchQuery(store);
   };
 
   render() {

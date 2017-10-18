@@ -3,37 +3,41 @@ import { loadState, saveState } from '../utility';
 import { searchApp } from '../reducers';
 import { throttle } from 'lodash';
 
-const persistedState = Object.assign(
-  {},
-  {
-    areTabs: true,
-    areFilters: true,
-    sortTypes: [
-      {
-        name: 'latest',
-        isActive: true,
-      },
-      {
-        name: 'popularity',
-        isActive: false,
-      },
-      {
-        name: 'comments count',
-        isActive: false,
-      },
-    ],
-  },
-  loadState(),
-);
+const configureStore = () => {
+  const persistedState = Object.assign(
+    {},
+    {
+      areTabs: true,
+      areFilters: true,
+      sortTypes: [
+        {
+          name: 'latest',
+          isActive: true,
+        },
+        {
+          name: 'popularity',
+          isActive: false,
+        },
+        {
+          name: 'comments count',
+          isActive: false,
+        },
+      ],
+    },
+    loadState(),
+  );
 
-const store = createStore(
-  searchApp,
-  persistedState,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-);
+  const store = createStore(
+    searchApp,
+    persistedState,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  );
 
-store.subscribe(throttle(() => {
-  saveState(store.getState());
-}, 1000));
+  store.subscribe(throttle(() => {
+    saveState(store.getState());
+  }, 1000));
 
-export default store;
+  return store;
+};
+
+export default configureStore;

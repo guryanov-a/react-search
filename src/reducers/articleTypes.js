@@ -1,4 +1,4 @@
-const setArticleTypes = (articleTypes) => {
+const articleTypesInit = (articleTypes) => {
   return articleTypes.map(articleType => {
     return {
       name: articleType,
@@ -16,17 +16,21 @@ const articleTypes = (
   ],
   action
 ) => {
+
+
   switch(action.type) {
-    case 'SET_ARTICLE_TYPES':
-      const articleTypesObjects = setArticleTypes(action.articleTypes);
+    case 'LOAD_ARTICLE_TYPES':
+      const articleTypes = articleTypesInit(action.articleTypes);
 
       return [
         {
           name: 'all',
           isActive: true,
         },
-        ...articleTypesObjects,
+        ...articleTypes,
       ];
+    case 'SET_ARTICLE_TYPES':
+      return action.articleTypes;
     case 'CHOOSE_ARTICLE_TYPE':
       return state.map(articleType => {
         if(articleType.name === action.articleType) {

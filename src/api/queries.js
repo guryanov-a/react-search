@@ -1,12 +1,11 @@
-import store from '../store';
 import {
   changeSearchResultsCount,
   changePageCount,
   changeSearchResults,
-  setArticleTypes,
+  loadArticleTypes,
 } from '../actions';
 
-export const searchQuery = () => {
+export const searchQuery = (store) => {
   const {
     searchedText,
     searchResultsLimit,
@@ -78,11 +77,11 @@ export const searchQuery = () => {
   })
 };
 
-export const filtersQuery = () => {
+export const filtersQuery = (store) => {
   fetch(`/articleTypes`)
     .then(response => response.json())
     .then(newArticleTypes => {
-      store.dispatch(setArticleTypes(newArticleTypes));
+      store.dispatch(loadArticleTypes(newArticleTypes));
     })
     .catch(e => new Error(e));
 };

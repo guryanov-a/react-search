@@ -33,7 +33,7 @@ class SearchResultsPagination extends Component {
     store.dispatch(changeSearchOffsetEnd(offsetEnd));
     store.dispatch(changeCurrentPage(selectedPage));
 
-    searchQuery();
+    searchQuery(store);
   };
 
   render() {

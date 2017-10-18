@@ -35,7 +35,7 @@ class ArticlesSearchForm extends Component {
     store.dispatch(changeCurrentPage(0));
     store.dispatch(changeSearchedText(searchText));
 
-    searchQuery();
+    searchQuery(store);
 
     e.target.reset();
     store.dispatch(changeSearchText(''));
@@ -55,8 +55,8 @@ class ArticlesSearchForm extends Component {
       store.dispatch(changePaginationMargin(0));
     }
 
-    filtersQuery();
-    searchQuery();
+    filtersQuery(store);
+    searchQuery(store);
   }
 
   componentWillUnmount() {

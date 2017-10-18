@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SearchApp from './components/SearchApp';
-import { Provider } from 'react-redux';
-import store from './store';
+import configureStore from './store';
+import Root from './components/Root';
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
 
+const store = configureStore();
+
 ReactDOM.render(
-  <Provider store={store} >
-    <SearchApp />
-  </Provider>,
+  <Root store={store} />,
   document.getElementById('root'),
 );

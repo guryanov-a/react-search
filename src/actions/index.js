@@ -67,3 +67,8 @@ export const setArticleTypes = (articleTypes) => ({
   type: 'SET_ARTICLE_TYPES',
   articleTypes,
 });
+
+export const loadArticleTypes = (articleTypes) => ({
+  type: 'LOAD_ARTICLE_TYPES',
+  articleTypes,
+});
