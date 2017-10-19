@@ -107,4 +107,6 @@ img {
   justify-content: center;
 }
 
-
+.nav-tabs .nav-link {
+  color: inherit;
+}

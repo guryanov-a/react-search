@@ -6,7 +6,7 @@ import SearchApp from './SearchApp';
 const Root = ({store}) => (
   <Provider store={store}>
     <BrowserRouter>
-      <Route path="/" component={SearchApp} />
+      <Route path="/:filter?" component={SearchApp} />
     </BrowserRouter>
   </Provider>
 );

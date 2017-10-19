@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { searchQuery } from '../api';
 import Tabs from './Tabs';
+import RouterTab from './RouterTab';
 import {
   changeSearchOffset,
   changeSearchOffsetEnd,
@@ -38,7 +39,19 @@ class ArticleTypeTabs extends Component {
     const { store } = this.context;
     const { articleTypes } = store.getState();
 
-    return <Tabs tabs={articleTypes} onTabClick={this.handleClick} />;
+    return (
+      <Tabs>
+        {
+          articleTypes.map((articleType, i) => (
+            <RouterTab
+              key={i}
+              {...articleType}
+              onClick={this.handleClick}
+            />
+          ))
+        }
+      </Tabs>
+    );
   }
 }
 

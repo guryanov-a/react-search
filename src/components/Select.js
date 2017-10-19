@@ -1,5 +1,5 @@
 import React from 'react';
-import SelectOption from './SelectOption';
+import SelectOption from './RouterSelectOption';
 
 const Select = ({
   activeValue,
