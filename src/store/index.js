@@ -24,13 +24,11 @@ const configureStore = () => {
     },
   );
 
-  const store = createStore(
+  return createStore(
     searchApp,
     persistedState,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   );
-
-  return store;
 };
 
 export default configureStore;

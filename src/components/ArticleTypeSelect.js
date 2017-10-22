@@ -31,7 +31,7 @@ class ArticleTypeSelect extends Component {
     store.dispatch(changeCurrentPage(0));
     store.dispatch(chooseArticleType(e.target.value));
 
-    searchQuery(store);
+    searchQuery(store.getState(), store.dispatch);
   };
 
   render() {

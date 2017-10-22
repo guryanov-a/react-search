@@ -6,7 +6,7 @@ import {
   chooseArticleType,
 } from '../actions';
 
-export const searchQuery = (state) => {
+export const searchQuery = (state, dispatch) => {
   const {
     searchedText,
     searchResultsLimit,
@@ -14,7 +14,7 @@ export const searchQuery = (state) => {
     articleTypes,
     tagFilters,
     sortTypes,
-  } = state.getState();
+  } = state;
 
   const resultQueryArray = [];
 
@@ -67,14 +67,14 @@ export const searchQuery = (state) => {
   fetch(`/articles${resultQuery}`).then( (response) => {
     const {
       totalSearchResults,
-    } = state.getState();
+    } = state;
 
-    state.dispatch(changeSearchResultsCount(response.headers.get('X-Total-Count')));
-    state.dispatch(changePageCount(Math.ceil(totalSearchResults / searchResultsLimit)));
+    dispatch(changeSearchResultsCount(response.headers.get('X-Total-Count')));
+    dispatch(changePageCount(Math.ceil(totalSearchResults / searchResultsLimit)));
 
     return response.json();
   }).then( (articles) => {
-    state.dispatch(changeSearchResults(articles));
+    dispatch(changeSearchResults(articles));
   })
 };
 

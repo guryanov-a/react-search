@@ -31,7 +31,7 @@ class SearchSort extends Component {
     store.dispatch(changeCurrentPage(0));
     store.dispatch(changeSortType(event.target.value));
 
-    searchQuery(store);
+    searchQuery(store.getState(), store.dispatch);
   };
 
   render() {

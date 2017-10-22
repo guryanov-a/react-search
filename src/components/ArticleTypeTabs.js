@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { searchQuery } from '../api';
-import Tabs from './Tabs';
-import RouterTab from './RouterTab';
+import RouterTabs from './RouterTabs';
 import {
   changeSearchOffset,
   changeSearchOffsetEnd,
@@ -11,52 +10,51 @@ import {
 } from "../actions";
 
 class ArticleTypeTabs extends Component {
-  componentDidMount() {
-    const { store } = this.context;
+  componentDidUpdate(prevProps) {
+    if(this.props.tabs !== prevProps.tabs) {
+      const { state, dispatch } = this.props;
 
-    store.subscribe(() => {
-      this.forceUpdate();
-    });
+      searchQuery(state, dispatch);
+    }
   }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  handleClick = (e) => {
-    const { store } = this.context;
-    const { searchResultsLimit } = store.getState();
-
-    store.dispatch(changeSearchOffset(0));
-    store.dispatch(changeSearchOffsetEnd(searchResultsLimit));
-    store.dispatch(changeCurrentPage(0));
-    store.dispatch(chooseArticleType(e.target.dataset.articleType));
-
-    searchQuery(store);
-  };
 
   render() {
-    const { store } = this.context;
-    const { articleTypes } = store.getState();
-
     return (
-      <Tabs>
-        {
-          articleTypes.map((articleType, i) => (
-            <RouterTab
-              key={i}
-              {...articleType}
-              onClick={this.handleClick}
-            />
-          ))
-        }
-      </Tabs>
+      <RouterTabs {...this.props} />
     );
   }
 }
 
-ArticleTypeTabs.contextTypes = {
-  store: PropTypes.object,
+const mapStateToProps = (state) => {
+  return {
+    tabs: state.articleTypes,
+    searchResultsLimit: state.searchResultsLimit,
+    state,
+  };
 };
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  return Object.assign({}, ownProps, {
+    tabs: stateProps.tabs,
+    state: stateProps.state,
+    dispatch: dispatchProps.dispatch,
+    handleClick: (e) => {
+      e.preventDefault();
+
+      const { searchResultsLimit } = stateProps;
+
+      dispatchProps.dispatch(changeSearchOffset(0));
+      dispatchProps.dispatch(changeSearchOffsetEnd(searchResultsLimit));
+      dispatchProps.dispatch(changeCurrentPage(0));
+      dispatchProps.dispatch(chooseArticleType(e.target.dataset.articleType));
+    }
+  })
+};
+
+ArticleTypeTabs = connect(
+  mapStateToProps,
+  null,
+  mergeProps,
+)(ArticleTypeTabs);
 
 export default ArticleTypeTabs;

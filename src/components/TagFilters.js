@@ -30,7 +30,7 @@ class TagFilters extends Component {
     store.dispatch(changeCurrentPage(0));
     store.dispatch(toggleArticleTagFilter(filter));
 
-    searchQuery(store);
+    searchQuery(store.getState(), store.dispatch);
   };
 
   componentDidMount() {

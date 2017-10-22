@@ -36,7 +36,7 @@ class ArticlesSearchForm extends Component {
     store.dispatch(changeCurrentPage(0));
     store.dispatch(changeSearchedText(searchText));
 
-    searchQuery(store);
+    searchQuery(store.getState(), store.dispatch);
 
     e.target.reset();
     store.dispatch(changeSearchText(''));
@@ -57,7 +57,7 @@ class ArticlesSearchForm extends Component {
     }
 
     filtersQuery(store, this.props);
-    searchQuery(store);
+    searchQuery(store.getState(), store.dispatch);
   }
 
   componentWillUnmount() {
