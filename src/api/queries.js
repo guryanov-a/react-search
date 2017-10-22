@@ -3,9 +3,10 @@ import {
   changePageCount,
   changeSearchResults,
   loadArticleTypes,
+  chooseArticleType,
 } from '../actions';
 
-export const searchQuery = (store) => {
+export const searchQuery = (state) => {
   const {
     searchedText,
     searchResultsLimit,
@@ -13,7 +14,7 @@ export const searchQuery = (store) => {
     articleTypes,
     tagFilters,
     sortTypes,
-  } = store.getState();
+  } = state.getState();
 
   const resultQueryArray = [];
 
@@ -66,22 +67,25 @@ export const searchQuery = (store) => {
   fetch(`/articles${resultQuery}`).then( (response) => {
     const {
       totalSearchResults,
-    } = store.getState();
+    } = state.getState();
 
-    store.dispatch(changeSearchResultsCount(response.headers.get('X-Total-Count')));
-    store.dispatch(changePageCount(Math.ceil(totalSearchResults / searchResultsLimit)));
+    state.dispatch(changeSearchResultsCount(response.headers.get('X-Total-Count')));
+    state.dispatch(changePageCount(Math.ceil(totalSearchResults / searchResultsLimit)));
 
     return response.json();
   }).then( (articles) => {
-    store.dispatch(changeSearchResults(articles));
+    state.dispatch(changeSearchResults(articles));
   })
 };
 
-export const filtersQuery = (store) => {
+export const filtersQuery = (state, props) => {
   fetch(`/articleTypes`)
     .then(response => response.json())
     .then(newArticleTypes => {
-      store.dispatch(loadArticleTypes(newArticleTypes));
+      const { match } = props;
+
+      state.dispatch(loadArticleTypes(newArticleTypes));
+      state.dispatch(chooseArticleType(match.params.articleType || 'all'));
     })
     .catch(e => new Error(e));
 };

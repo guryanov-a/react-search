@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import SearchForm from './SearchForm';
 import { searchQuery } from '../api';
@@ -55,7 +56,7 @@ class ArticlesSearchForm extends Component {
       store.dispatch(changePaginationMargin(0));
     }
 
-    filtersQuery(store);
+    filtersQuery(store, this.props);
     searchQuery(store);
   }
 
@@ -72,4 +73,6 @@ ArticlesSearchForm.contextTypes = {
   store: PropTypes.object,
 };
 
-export default ArticlesSearchForm;
+const ArticlesSearchFormWithRouter = withRouter(ArticlesSearchForm);
+
+export default ArticlesSearchFormWithRouter;
