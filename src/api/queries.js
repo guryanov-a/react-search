@@ -65,11 +65,9 @@ export const searchQuery = (state, dispatch) => {
   let resultQuery = `?${resultQueryArray.join('&')}`;
 
   fetch(`/articles${resultQuery}`).then( (response) => {
-    const {
-      totalSearchResults,
-    } = state;
+    const totalSearchResults = response.headers.get('X-Total-Count');
 
-    dispatch(changeSearchResultsCount(response.headers.get('X-Total-Count')));
+    dispatch(changeSearchResultsCount(totalSearchResults));
     dispatch(changePageCount(Math.ceil(totalSearchResults / searchResultsLimit)));
 
     return response.json();
