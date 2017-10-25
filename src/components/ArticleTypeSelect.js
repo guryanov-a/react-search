@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { searchQuery } from '../api';
 import Select from './Select';
 import {
@@ -10,33 +10,16 @@ import {
 } from "../actions";
 
 class ArticleTypeSelect extends Component {
-  componentDidMount() {
-    const { store } = this.context;
+  componentDidUpdate(prevProps) {
+    if(this.props.tabs !== prevProps.tabs) {
+      const { state, dispatch } = this.props;
 
-    store.subscribe(() => {
-      this.forceUpdate();
-    });
+      searchQuery(state, dispatch);
+    }
   }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  handleChange = (e) => {
-    const { store } = this.context;
-    const { searchResultsLimit } = store.getState();
-
-    store.dispatch(changeSearchOffset(0));
-    store.dispatch(changeSearchOffsetEnd(searchResultsLimit));
-    store.dispatch(changeCurrentPage(0));
-    store.dispatch(chooseArticleType(e.target.value));
-
-    searchQuery(store.getState(), store.dispatch);
-  };
 
   render() {
-    const { store } = this.context;
-    const { articleTypes } = store.getState();
+    const { articleTypes } = this.props;
 
     return <Select
       activeValue={articleTypes.filter(articleType => articleType.isActive)[0].name}
@@ -47,8 +30,32 @@ class ArticleTypeSelect extends Component {
   }
 }
 
-ArticleTypeSelect.contextTypes = {
-  store: PropTypes.object,
+const mapStateToProps = (state) => {
+  return {
+    articleTypes: state.articleTypes,
+    state,
+  };
 };
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  return Object.assign({}, ownProps, {
+    articleTypes: stateProps.articleTypes,
+    dispatch: dispatchProps.dispatch,
+    handleChange: (e) => {
+      const { searchResultsLimit } = stateProps;
+
+      dispatchProps.dispatch(changeSearchOffset(0));
+      dispatchProps.dispatch(changeSearchOffsetEnd(searchResultsLimit));
+      dispatchProps.dispatch(changeCurrentPage(0));
+      dispatchProps.dispatch(chooseArticleType(e.target.value));
+    },
+  })
+};
+
+ArticleTypeSelect = connect(
+  mapStateToProps,
+  null,
+  mergeProps,
+)(ArticleTypeSelect);
 
 export default ArticleTypeSelect;

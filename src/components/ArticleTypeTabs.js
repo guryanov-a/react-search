@@ -47,7 +47,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
       dispatchProps.dispatch(changeSearchOffsetEnd(searchResultsLimit));
       dispatchProps.dispatch(changeCurrentPage(0));
       dispatchProps.dispatch(chooseArticleType(e.target.dataset.articleType));
-    }
+    },
   })
 };
 
