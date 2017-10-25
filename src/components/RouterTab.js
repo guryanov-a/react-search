@@ -14,7 +14,7 @@ const RouterTab = ({
       data-article-type={name}
       onClick={onClick}
       className={`filter-tab__button nav-link ${isActive ? 'active' : ''}`}
-      to={name === 'all' ? '' : name}
+      to={name === 'all' ? '/' : `/${name}`}
     >{name}</Link>
   </li>
 );

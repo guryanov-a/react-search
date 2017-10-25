@@ -19,8 +19,10 @@ class ArticleTypeTabs extends Component {
   }
 
   render() {
+    const { handleClick, tabs } = this.props;
+
     return (
-      <RouterTabs {...this.props} />
+      <RouterTabs handleClick={handleClick} tabs={tabs} />
     );
   }
 }
@@ -39,8 +41,6 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     state: stateProps.state,
     dispatch: dispatchProps.dispatch,
     handleClick: (e) => {
-      e.preventDefault();
-
       const { searchResultsLimit } = stateProps;
 
       dispatchProps.dispatch(changeSearchOffset(0));
