@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { searchQuery } from '../api';
 import Select from './Select';
 import {
@@ -19,11 +20,14 @@ class ArticleTypeSelect extends Component {
   }
 
   render() {
-    const { articleTypes } = this.props;
+    const {
+      articleTypes,
+      handleChange,
+    } = this.props;
 
     return <Select
       activeValue={articleTypes.filter(articleType => articleType.isActive)[0].name}
-      onChange={this.handleChange}
+      onChange={handleChange}
       options={articleTypes}
       className="filter-select"
     />;
@@ -33,6 +37,7 @@ class ArticleTypeSelect extends Component {
 const mapStateToProps = (state) => {
   return {
     articleTypes: state.articleTypes,
+    searchResultsLimit: state.searchResultsLimit,
     state,
   };
 };
@@ -44,6 +49,8 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     handleChange: (e) => {
       const { searchResultsLimit } = stateProps;
 
+      ownProps.history.push(e.target.value === 'all' ? '/' : e.target.value);
+
       dispatchProps.dispatch(changeSearchOffset(0));
       dispatchProps.dispatch(changeSearchOffsetEnd(searchResultsLimit));
       dispatchProps.dispatch(changeCurrentPage(0));
@@ -52,10 +59,10 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
   })
 };
 
-ArticleTypeSelect = connect(
+ArticleTypeSelect = withRouter(connect(
   mapStateToProps,
   null,
   mergeProps,
-)(ArticleTypeSelect);
+)(ArticleTypeSelect));
 
 export default ArticleTypeSelect;
