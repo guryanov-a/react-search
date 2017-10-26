@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import SearchForm from './SearchForm';
-import { searchQuery } from '../api';
-import { filtersQuery } from "../api/queries";
+import {
+  searchQuery,
+  filtersQuery,
+} from '../api';
 import {
   changeSearchOffset,
   changeSearchOffsetEnd,
@@ -15,64 +17,87 @@ import {
 } from "../actions";
 
 class ArticlesSearchForm extends Component {
-  handleSearchTextChange = (e) => {
-    const { store } = this.context;
-
-    store.dispatch(changeSearchText(e.target.value));
-  };
-
-  handleSearch = (e) => {
-    const { store } = this.context;
-
-    e.preventDefault();
-
-    const {
-      searchResultsLimit,
-      searchText,
-    } = store.getState();
-
-    store.dispatch(changeSearchOffset(0));
-    store.dispatch(changeSearchOffsetEnd(searchResultsLimit));
-    store.dispatch(changeCurrentPage(0));
-    store.dispatch(changeSearchedText(searchText));
-
-    searchQuery(store.getState(), store.dispatch);
-
-    e.target.reset();
-    store.dispatch(changeSearchText(''));
-  };
-
   componentDidMount() {
-    const { store } = this.context;
-    const { searchResultsLimit } = store.getState();
-
-    store.subscribe(() => {
-      this.forceUpdate();
-    });
+    const {
+      state,
+      dispatch,
+      searchResultsLimit,
+      match
+    } = this.props;
 
     if (window.innerWidth < 768) {
-      store.dispatch(changeSearchLimit(6));
-      store.dispatch(changeSearchOffsetEnd(searchResultsLimit));
-      store.dispatch(changePaginationMargin(0));
+      dispatch(changeSearchLimit(6));
+      dispatch(changeSearchOffsetEnd(searchResultsLimit));
+      dispatch(changePaginationMargin(0));
     }
 
-    filtersQuery(store, this.props);
-    searchQuery(store.getState(), store.dispatch);
+    filtersQuery(match, dispatch);
+    searchQuery(state, dispatch);
   }
 
-  componentWillUnmount() {
-    this.unsubscribe();
+  componentDidUpdate(prevProps) {
+    if(this.props.searchedText !== prevProps.searchedText) {
+      const {
+        state,
+        dispatch,
+      } = this.props;
+
+      searchQuery(state, dispatch);
+    }
   }
 
   render() {
-    return <SearchForm onSearch={this.handleSearch} onSearchTextChange={this.handleSearchTextChange} />;
+    const {
+      handleSearch,
+      handleSearchTextChange,
+    } = this.props;
+
+    return <SearchForm onSearch={handleSearch} onSearchTextChange={handleSearchTextChange} />;
   }
 }
 
-ArticlesSearchForm.contextTypes = {
-  store: PropTypes.object,
+const mapStateToProps = (state) => {
+  return {
+    searchResultsLimit: state.searchResultsLimit,
+    searchText: state.searchText,
+    searchedText: state.searchedText,
+    state,
+  };
 };
 
-const ArticlesSearchFormWithRouter = withRouter(ArticlesSearchForm);
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  return Object.assign({}, ownProps, {
+    dispatch: dispatchProps.dispatch,
+    searchResultsLimit: stateProps.searchResultsLimit,
+    searchText: stateProps.searchText,
+    searchedText: stateProps.searchedText,
+    state: stateProps.state,
+    handleSearchTextChange: (e) => {
+      dispatchProps.dispatch(changeSearchText(e.target.value));
+    },
+    handleSearch: (e) => {
+      e.preventDefault();
 
-export default ArticlesSearchFormWithRouter;
+      const {
+        searchResultsLimit,
+        searchText,
+      } = stateProps;
+
+      dispatchProps.dispatch(changeSearchOffset(0));
+      dispatchProps.dispatch(changeSearchOffsetEnd(searchResultsLimit));
+      dispatchProps.dispatch(changeCurrentPage(0));
+      dispatchProps.dispatch(changeSearchedText(searchText));
+
+      e.target.reset();
+      dispatchProps.dispatch(changeSearchText(''));
+    }
+  })
+};
+
+ArticlesSearchForm = withRouter(connect(
+  mapStateToProps,
+  null,
+  mergeProps,
+)(ArticlesSearchForm));
+
+export default ArticlesSearchForm;

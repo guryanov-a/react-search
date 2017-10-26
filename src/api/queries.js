@@ -76,14 +76,12 @@ export const searchQuery = (state, dispatch) => {
   })
 };
 
-export const filtersQuery = (state, props) => {
+export const filtersQuery = (match, dispatch) => {
   fetch(`/articleTypes`)
     .then(response => response.json())
     .then(newArticleTypes => {
-      const { match } = props;
-
-      state.dispatch(loadArticleTypes(newArticleTypes));
-      state.dispatch(chooseArticleType(match.params.articleType || 'all'));
+      dispatch(loadArticleTypes(newArticleTypes));
+      dispatch(chooseArticleType(match.params.articleType || 'all'));
     })
     .catch(e => new Error(e));
 };
