@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Pagination from 'react-paginate';
 import { searchQuery } from '../api';
 import {
@@ -9,46 +9,30 @@ import {
 } from '../actions';
 
 class SearchResultsPagination extends Component {
-  componentDidMount() {
-    const { store } = this.context;
+  componentDidUpdate(prevProps) {
+    const { currentPage } = this.props;
 
-    store.subscribe(() => {
-      this.forceUpdate();
-    });
+    if(currentPage !== prevProps.currentPage) {
+      const { state, dispatch } = this.props;
+
+      searchQuery(state, dispatch);
+    }
   }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  handlePageClick = (data) => {
-    const { store } = this.context;
-    const { searchResultsLimit } = store.getState();
-
-    let selectedPage = data.selected;
-    let offset = Math.ceil(selectedPage * searchResultsLimit);
-    let offsetEnd = Math.ceil(selectedPage * searchResultsLimit + searchResultsLimit);
-
-    store.dispatch(changeSearchOffset(offset));
-    store.dispatch(changeSearchOffsetEnd(offsetEnd));
-    store.dispatch(changeCurrentPage(selectedPage));
-
-    searchQuery(store.getState(), store.dispatch);
-  };
 
   render() {
-    const { store } = this.context;
     const {
       totalSearchResults,
-      pagination,
+      marginPagesDisplayed,
+      pageRangeDisplayed,
       pageCount,
       currentPage,
       searchResultsLimit,
-    } = store.getState();
+      handlePageClick,
+    } = this.props;
 
     if(searchResultsLimit <= totalSearchResults) {
       return (
-        <nav aria-label="Page navigation example">
+        <nav>
           <Pagination
             className="pagination"
             previousLabel={"Prev"}
@@ -56,9 +40,9 @@ class SearchResultsPagination extends Component {
             breakLabel={"..."}
             breakClassName={"break-me page-item page-link disabled"}
             pageCount={pageCount}
-            marginPagesDisplayed={pagination.marginPagesDisplayed}
-            pageRangeDisplayed={pagination.pageRangeDisplayed}
-            onPageChange={this.handlePageClick}
+            marginPagesDisplayed={marginPagesDisplayed}
+            pageRangeDisplayed={pageRangeDisplayed}
+            onPageChange={handlePageClick}
             initialPage={currentPage}
             forcePage={currentPage}
             containerClassName={"pagination search-results-pagination"}
@@ -79,8 +63,38 @@ class SearchResultsPagination extends Component {
   }
 }
 
-SearchResultsPagination.contextTypes = {
-  store: PropTypes.object,
+const mapStateToProps = (state) => ({
+  state,
+  totalSearchResults: state.totalSearchResults,
+  marginPagesDisplayed: state.pagination.marginPagesDisplayed,
+  pageRangeDisplayed: state.pagination.pageRangeDisplayed,
+  pageCount: state.pageCount,
+  currentPage: state.currentPage,
+  searchResultsLimit: state.searchResultsLimit,
+});
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  return Object.assign({}, ownProps, stateProps, {
+    dispatch: dispatchProps.dispatch,
+    handlePageClick: (data) => {
+      const { searchResultsLimit } = stateProps;
+      const { dispatch } = dispatchProps;
+
+      let selectedPage = data.selected;
+      let offset = Math.ceil(selectedPage * searchResultsLimit);
+      let offsetEnd = Math.ceil(selectedPage * searchResultsLimit + searchResultsLimit);
+
+      dispatch(changeSearchOffset(offset));
+      dispatch(changeSearchOffsetEnd(offsetEnd));
+      dispatch(changeCurrentPage(selectedPage));
+    }
+  })
 };
+
+SearchResultsPagination = connect(
+  mapStateToProps,
+  null,
+  mergeProps,
+)(SearchResultsPagination);
 
 export default SearchResultsPagination;
