@@ -63,15 +63,15 @@ const mapStateToProps = (state) => ({
   searchedText: state.searchedText,
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  dispatch,
+  handleSearchTextChange(e) {
+    dispatch(changeSearchText(e.target.value));
+  },
+});
+
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  return Object.assign({}, ownProps, dispatchProps, {
-    searchResultsLimit: stateProps.searchResultsLimit,
-    searchText: stateProps.searchText,
-    searchedText: stateProps.searchedText,
-    state: stateProps.state,
-    handleSearchTextChange(e) {
-      dispatchProps.dispatch(changeSearchText(e.target.value));
-    },
+  return Object.assign({}, ownProps, stateProps, dispatchProps, {
     handleSearch(e) {
       e.preventDefault();
 
@@ -79,12 +79,13 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
         searchResultsLimit,
         searchText,
       } = stateProps;
+      const { dispatch } = dispatchProps;
 
-      dispatchProps.dispatch(changeSearchOffset(0));
-      dispatchProps.dispatch(changeSearchOffsetEnd(searchResultsLimit));
-      dispatchProps.dispatch(changeCurrentPage(0));
-      dispatchProps.dispatch(changeSearchedText(searchText));
-      dispatchProps.dispatch(changeSearchText(''));
+      dispatch(changeSearchOffset(0));
+      dispatch(changeSearchOffsetEnd(searchResultsLimit));
+      dispatch(changeCurrentPage(0));
+      dispatch(changeSearchedText(searchText));
+      dispatch(changeSearchText(''));
 
       e.target.reset();
     }
@@ -93,7 +94,7 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
 
 ArticlesSearchForm = withRouter(connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
   mergeProps,
 )(ArticlesSearchForm));
 
