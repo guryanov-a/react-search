@@ -1,38 +1,21 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
+import { connect } from 'react-redux';
 
-class SearchInfo extends Component {
-  componentDidMount() {
-    const { store } = this.context;
+let SearchInfo = ({ totalSearchResults, searchedText }) => (
+  <div className="search-results__info">
+    <span className="search-results__counter">{totalSearchResults} Results</span>
+    {searchedText && <span className="hyphen">-</span> }
+    <span className="search-results__search-word">{searchedText}</span>
+  </div>
+);
 
-    store.subscribe(() => {
-      this.forceUpdate();
-    });
-  }
+const mapStateToProps = (state) => ({
+  totalSearchResults: state.totalSearchResults,
+  searchedText: state.searchedText,
+});
 
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  render() {
-    const { store } = this.context;
-    const {
-      totalSearchResults,
-      searchedText,
-    } = store.getState();
-
-    return (
-      <div className="search-results__info">
-        <span className="search-results__counter">{totalSearchResults} Results</span>
-        {searchedText && <span className="hyphen">-</span> }
-        <span className="search-results__search-word">{searchedText}</span>
-      </div>
-    );
-  }
-}
-
-SearchInfo.contextTypes = {
-  store: PropTypes.object,
-};
+SearchInfo = connect(
+  mapStateToProps,
+)(SearchInfo);
 
 export default SearchInfo;
