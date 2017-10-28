@@ -27,20 +27,18 @@ class ArticleTypeTabs extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    tabs: state.articleTypes,
-    searchResultsLimit: state.searchResultsLimit,
-    state,
-  };
-};
+const mapStateToProps = (state) => ({
+  state,
+  tabs: state.articleTypes,
+  searchResultsLimit: state.searchResultsLimit,
+});
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
   return Object.assign({}, ownProps, {
     tabs: stateProps.tabs,
     state: stateProps.state,
     dispatch: dispatchProps.dispatch,
-    handleClick: (e) => {
+    handleClick(e) {
       const { searchResultsLimit } = stateProps;
 
       dispatchProps.dispatch(changeSearchOffset(0));

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import FilterList from './FilterList';
 import { searchQuery, filtersQuery } from '../api';
 import {
@@ -10,49 +10,29 @@ import {
 } from '../actions';
 
 class TagFilters extends Component {
-  handleToggleFilterGroup = (e) => {
-    const toggler = e.target;
-    const filterGroup = toggler.closest('.filter-group');
-    if(filterGroup.classList.contains('is-closed')) {
-      filterGroup.classList.remove('is-closed');
-    } else {
-      filterGroup.classList.add('is-closed');
-    }
-  };
-
-  onFilterItemChange = (e) => {
-    const { store } = this.context;
-    const { searchResultsLimit } = store.getState();
-    const filter = e.target.value;
-
-    store.dispatch(changeSearchOffset(0));
-    store.dispatch(changeSearchOffsetEnd(searchResultsLimit));
-    store.dispatch(changeCurrentPage(0));
-    store.dispatch(toggleArticleTagFilter(filter));
-
-    searchQuery(store.getState(), store.dispatch);
-  };
-
   componentDidMount() {
-    const { store } = this.context;
+    const { dispatch } = this.props;
 
-    store.subscribe(() => {
-      this.forceUpdate();
-    });
-
-    filtersQuery(store);
+    filtersQuery(null, dispatch);
   }
 
-  componentWillUnmount() {
-    this.unsubscribe();
+  componentDidUpdate(prevProps) {
+    const { filter } = this.props;
+
+    if(filter !== prevProps.filter) {
+      const { state, dispatch } = this.props;
+
+      searchQuery(state, dispatch);
+    }
   }
 
   render() {
-    const { store } = this.context;
     const {
       tagFilters,
       searchedText,
-    } = store.getState();
+      handleToggleFilterGroup,
+      onFilterItemChange,
+    } = this.props;
 
     return (
       <div className="search-filters">
@@ -60,7 +40,7 @@ class TagFilters extends Component {
         <div className="filter-group">
           <div className="filter-group__header">
             <h4 className="filter-group__title">{ searchedText }</h4>
-            <button className="filter-group__toggle" onClick={this.handleToggleFilterGroup}>Toggle filter group</button>
+            <button className="filter-group__toggle" onClick={handleToggleFilterGroup}>Toggle filter group</button>
           </div>
           <FilterList
             filters={tagFilters}
@@ -72,8 +52,39 @@ class TagFilters extends Component {
   }
 }
 
-TagFilters.contextTypes = {
-  store: PropTypes.object,
+const mapStateToProps = (state) => ({
+  searchResultsLimit: state.searchResultsLimit,
+});
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  return Object.assign({}, ownProps, stateProps, dispatchProps, {
+    handleToggleFilterGroup(e) {
+      const toggler = e.target;
+      const filterGroup = toggler.closest('.filter-group');
+
+      if(filterGroup.classList.contains('is-closed')) {
+        filterGroup.classList.remove('is-closed');
+      } else {
+        filterGroup.classList.add('is-closed');
+      }
+    },
+    onFilterItemChange(e) {
+      const { searchResultsLimit } = stateProps;
+      const { dispatch } = dispatchProps;
+      const filter = e.target.value;
+
+      dispatch(changeSearchOffset(0));
+      dispatch(changeSearchOffsetEnd(searchResultsLimit));
+      dispatch(changeCurrentPage(0));
+      dispatch(toggleArticleTagFilter(filter));
+    },
+  });
 };
+
+TagFilters = connect(
+  mapStateToProps,
+  null,
+  mergeProps,
+)(TagFilters);
 
 export default TagFilters;

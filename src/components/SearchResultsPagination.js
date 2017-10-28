@@ -74,9 +74,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  return Object.assign({}, ownProps, stateProps, {
-    dispatch: dispatchProps.dispatch,
-    handlePageClick: (data) => {
+  return Object.assign({}, ownProps, stateProps, dispatchProps, {
+    handlePageClick(data) {
       const { searchResultsLimit } = stateProps;
       const { dispatch } = dispatchProps;
 

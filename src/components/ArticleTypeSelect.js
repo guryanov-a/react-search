@@ -34,19 +34,16 @@ class ArticleTypeSelect extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    articleTypes: state.articleTypes,
-    searchResultsLimit: state.searchResultsLimit,
-    state,
-  };
-};
+const mapStateToProps = (state) => ({
+  state,
+  articleTypes: state.articleTypes,
+  searchResultsLimit: state.searchResultsLimit,
+});
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  return Object.assign({}, ownProps, {
+  return Object.assign({}, ownProps, dispatchProps, {
     articleTypes: stateProps.articleTypes,
-    dispatch: dispatchProps.dispatch,
-    handleChange: (e) => {
+    handleChange(e) {
       const { searchResultsLimit } = stateProps;
 
       ownProps.history.push(e.target.value === 'all' ? '/' : e.target.value);

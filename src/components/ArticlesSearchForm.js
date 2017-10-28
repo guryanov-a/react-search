@@ -56,26 +56,23 @@ class ArticlesSearchForm extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    searchResultsLimit: state.searchResultsLimit,
-    searchText: state.searchText,
-    searchedText: state.searchedText,
-    state,
-  };
-};
+const mapStateToProps = (state) => ({
+  state,
+  searchResultsLimit: state.searchResultsLimit,
+  searchText: state.searchText,
+  searchedText: state.searchedText,
+});
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  return Object.assign({}, ownProps, {
-    dispatch: dispatchProps.dispatch,
+  return Object.assign({}, ownProps, dispatchProps, {
     searchResultsLimit: stateProps.searchResultsLimit,
     searchText: stateProps.searchText,
     searchedText: stateProps.searchedText,
     state: stateProps.state,
-    handleSearchTextChange: (e) => {
+    handleSearchTextChange(e) {
       dispatchProps.dispatch(changeSearchText(e.target.value));
     },
-    handleSearch: (e) => {
+    handleSearch(e) {
       e.preventDefault();
 
       const {
@@ -87,9 +84,9 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
       dispatchProps.dispatch(changeSearchOffsetEnd(searchResultsLimit));
       dispatchProps.dispatch(changeCurrentPage(0));
       dispatchProps.dispatch(changeSearchedText(searchText));
+      dispatchProps.dispatch(changeSearchText(''));
 
       e.target.reset();
-      dispatchProps.dispatch(changeSearchText(''));
     }
   })
 };

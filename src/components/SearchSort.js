@@ -50,9 +50,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  return Object.assign({}, ownProps, stateProps, {
-    dispatch: dispatchProps.dispatch,
-    handleSelectChange: (event) => {
+  return Object.assign({}, ownProps, stateProps, dispatchProps, {
+    handleSelectChange(event) {
       const { searchResultsLimit } = stateProps;
       const { dispatch } = dispatchProps;
 

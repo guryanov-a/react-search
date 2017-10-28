@@ -16,8 +16,8 @@ let ArticleTypeFilters = ({ areTabs }) => {
   }
 };
 
-const mapStateToProps = (state) => ({
-  areTabs: state.areTabs,
+const mapStateToProps = ({ areTabs }) => ({
+  areTabs,
 });
 
 ArticleTypeFilters = connect(
