@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { searchQuery } from "../api/queries";
 import Select from './Select';
 import {
@@ -10,33 +10,21 @@ import {
 } from '../actions';
 
 class SearchSort extends Component {
-  componentDidMount() {
-    const { store } = this.context;
+  componentDidUpdate(prevProps) {
+    const { sortTypes } = this.props;
 
-    store.subscribe(() => {
-      this.forceUpdate();
-    });
+    if(sortTypes !== prevProps.sortTypes) {
+      const { state, dispatch } = this.props;
+
+      searchQuery(state, dispatch);
+    }
   }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-
-  handleSelectChange = (event) => {
-    const { store } = this.context;
-    const { searchResultsLimit } = store.getState();
-
-    store.dispatch(changeSearchOffset(0));
-    store.dispatch(changeSearchOffsetEnd(searchResultsLimit));
-    store.dispatch(changeCurrentPage(0));
-    store.dispatch(changeSortType(event.target.value));
-
-    searchQuery(store.getState(), store.dispatch);
-  };
 
   render() {
-    const { store } = this.context;
-    const { sortTypes } = store.getState();
+    const {
+      sortTypes,
+      handleSelectChange,
+    } = this.props;
 
     return (
       <div className="search-sort">
@@ -46,7 +34,7 @@ class SearchSort extends Component {
             id="search-sort"
             className="search-sort__select"
             activeValue={sortTypes.filter(sortType => sortType.isActive)[0].name}
-            onChange={this.handleSelectChange}
+            onChange={handleSelectChange}
             options={sortTypes}
           />
         </label>
@@ -55,8 +43,31 @@ class SearchSort extends Component {
   }
 }
 
-SearchSort.contextTypes = {
-  store: PropTypes.object,
+const mapStateToProps = (state) => ({
+  state,
+  sortTypes: state.sortTypes,
+  searchResultsLimit: state.searchResultsLimit,
+});
+
+const mergeProps = (stateProps, dispatchProps, ownProps) => {
+  return Object.assign({}, ownProps, stateProps, {
+    dispatch: dispatchProps.dispatch,
+    handleSelectChange: (event) => {
+      const { searchResultsLimit } = stateProps;
+      const { dispatch } = dispatchProps;
+
+      dispatch(changeSearchOffset(0));
+      dispatch(changeSearchOffsetEnd(searchResultsLimit));
+      dispatch(changeCurrentPage(0));
+      dispatch(changeSortType(event.target.value));
+    }
+  });
 };
+
+SearchSort = connect(
+  mapStateToProps,
+  null,
+  mergeProps,
+)(SearchSort);
 
 export default SearchSort;
