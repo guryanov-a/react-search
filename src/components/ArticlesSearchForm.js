@@ -21,13 +21,14 @@ class ArticlesSearchForm extends Component {
     const {
       state,
       dispatch,
-      searchResultsLimit,
-      match
+      match,
     } = this.props;
 
     if (window.innerWidth < 768) {
-      dispatch(changeSearchLimit(6));
-      dispatch(changeSearchOffsetEnd(searchResultsLimit));
+      const mobileSearchResultsLimit = 6;
+
+      dispatch(changeSearchLimit(mobileSearchResultsLimit));
+      dispatch(changeSearchOffsetEnd(mobileSearchResultsLimit));
       dispatch(changePaginationMargin(0));
     }
 

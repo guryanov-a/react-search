@@ -34,10 +34,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mergeProps = (stateProps, dispatchProps, ownProps) => {
-  return Object.assign({}, ownProps, {
+  return Object.assign({}, ownProps, dispatchProps, {
     tabs: stateProps.tabs,
     state: stateProps.state,
-    dispatch: dispatchProps.dispatch,
     handleClick(e) {
       const { searchResultsLimit } = stateProps;
 
