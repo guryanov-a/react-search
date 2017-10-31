@@ -1,4 +1,4 @@
-const articleTypesInit = (articleTypes) => {
+const getResetArticleTypes = (articleTypes) => {
   return articleTypes.map(articleType => {
     return {
       name: articleType,
@@ -16,11 +16,9 @@ const articleTypes = (
   ],
   action
 ) => {
-
-
   switch(action.type) {
     case 'LOAD_ARTICLE_TYPES':
-      const articleTypes = articleTypesInit(action.articleTypes);
+      const articleTypes = getResetArticleTypes(action.articleTypes);
 
       return [
         {
