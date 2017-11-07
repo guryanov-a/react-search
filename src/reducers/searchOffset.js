@@ -1,6 +1,8 @@
+import { CHANGE_SEARCH_OFFSET } from '../constants';
+
 const searchOffset = (state = 0, action) => {
   switch(action.type) {
-    case 'CHANGE_SEARCH_OFFSET':
+    case CHANGE_SEARCH_OFFSET:
       return action.searchOffset;
     default:
       return state;

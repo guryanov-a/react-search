@@ -29,6 +29,7 @@ export const searchQuery = (state, dispatch) => {
 
   // Filtering by article type
   const activeArticleType = articleTypes.filter(articleType => articleType.isActive)[0].name;
+
   if(activeArticleType !== 'all') {
     resultQueryArray.push(`articleType=${activeArticleType}`);
   }
@@ -37,6 +38,7 @@ export const searchQuery = (state, dispatch) => {
   const activeTagFilters = tagFilters
     .filter(tagFilter => tagFilter.isActive)
     .map(tagFilter => tagFilter.name);
+
   if(activeTagFilters.length) {
     activeTagFilters.forEach(activeTagFilter => {
       resultQueryArray.push(`tagFilter=${activeTagFilter}`);

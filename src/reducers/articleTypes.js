@@ -1,3 +1,9 @@
+import {
+  LOAD_ARTICLE_TYPES,
+  SET_ARTICLE_TYPES,
+  CHOOSE_ARTICLE_TYPE,
+} from '../constants';
+
 const getResetArticleTypes = (articleTypes) => {
   return articleTypes.map(articleType => {
     return {
@@ -17,7 +23,7 @@ const articleTypes = (
   action
 ) => {
   switch(action.type) {
-    case 'LOAD_ARTICLE_TYPES':
+    case LOAD_ARTICLE_TYPES:
       const articleTypes = getResetArticleTypes(action.articleTypes);
 
       return [
@@ -27,9 +33,9 @@ const articleTypes = (
         },
         ...articleTypes,
       ];
-    case 'SET_ARTICLE_TYPES':
+    case SET_ARTICLE_TYPES:
       return action.articleTypes;
-    case 'CHOOSE_ARTICLE_TYPE':
+    case CHOOSE_ARTICLE_TYPE:
       return state.map(articleType => {
         if(articleType.name === action.articleType) {
           return {

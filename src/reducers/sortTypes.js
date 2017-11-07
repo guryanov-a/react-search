@@ -1,6 +1,8 @@
+import { CHANGE_SORT_TYPE } from '../constants';
+
 const sortType = (state = [], action) => {
   switch(action.type) {
-    case 'CHANGE_SORT_TYPE':
+    case CHANGE_SORT_TYPE:
       return state.map(sortType => {
         if (sortType.name !== action.newActiveSortType) {
           return {

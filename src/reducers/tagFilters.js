@@ -1,13 +1,18 @@
+import {
+  SET_ARTICLE_TAG_FILTERS,
+  TOGGLE_ARTICLE_TAG_FILTER,
+} from '../constants';
+
 const searchFilters = (state = [], action) => {
   switch(action.type) {
-    case 'SET_ARTICLE_TAG_FILTERS':
+    case SET_ARTICLE_TAG_FILTERS:
       return action.tagFilters.map(tagFilter => {
         return {
           name: tagFilter,
           isActive: false,
         };
       });
-    case 'TOGGLE_ARTICLE_TAG_FILTER':
+    case TOGGLE_ARTICLE_TAG_FILTER:
       return state.map(tagFilter => {
         if(tagFilter.name === action.tagFilter) {
           return {
